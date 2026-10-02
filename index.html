@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>Take to Token</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:Arial,sans-serif;
+      background:var(--tg-theme-bg-color,#0f172a);
+      color:var(--tg-theme-text-color,#fff);
+    }
+    .wrap{max-width:520px;margin:auto;padding:20px 16px 30px}
+    .hero{
+      padding:24px 18px;border-radius:22px;
+      background:linear-gradient(135deg,#5b21b6,#2563eb);
+      box-shadow:0 12px 30px rgba(0,0,0,.2)
+    }
+    .title{font-size:28px;font-weight:800;margin:0 0 6px}
+    .sub{opacity:.9;margin:0}
+    .card{
+      margin-top:16px;padding:18px;border-radius:18px;
+      background:var(--tg-theme-secondary-bg-color,#1e293b)
+    }
+    .label{font-size:13px;opacity:.7}
+    .balance{font-size:34px;font-weight:800;margin-top:5px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+    button{
+      width:100%;border:0;border-radius:15px;padding:16px 10px;
+      font-size:15px;font-weight:700;color:#fff;background:#2563eb;
+      cursor:pointer
+    }
+    button.secondary{background:#334155}
+    button:active{transform:scale(.98)}
+    .notice{font-size:13px;line-height:1.5;opacity:.75;margin-top:16px}
+    .user{margin-top:12px;font-size:14px;opacity:.8}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <section class="hero">
+    <h1 class="title">💰 Take to Token</h1>
+    <p class="sub">Earn points by completing available tasks.</p>
+    <div class="user" id="userInfo">Connecting to Telegram...</div>
+  </section>
+
+  <section class="card">
+    <div class="label">YOUR BALANCE</div>
+    <div class="balance"><span id="balance">0</span> Points</div>
+  </section>
+
+  <div class="grid">
+    <button onclick="watchAd()">🎁 Watch Ad & Earn</button>
+    <button class="secondary" onclick="referral()">👥 Refer & Earn</button>
+    <button class="secondary" onclick="withdraw()">💸 Withdraw</button>
+    <button class="secondary" onclick="showRules()">📋 Rules</button>
+  </div>
+
+  <div class="card notice" id="message">
+    Ad/reward integration is not connected yet. This first version is only the Mini App interface.
+  </div>
+</div>
+
+<script>
+  const tg = window.Telegram?.WebApp;
+  if (tg) {
+    tg.ready();
+    tg.expand();
+    const u = tg.initDataUnsafe?.user;
+    if (u) {
+      document.getElementById("userInfo").textContent =
+        "Hello, " + (u.first_name || "User") + " 👋";
+    } else {
+      document.getElementById("userInfo").textContent = "Telegram user";
+    }
+  } else {
+    document.getElementById("userInfo").textContent = "Preview mode";
+  }
+
+  let balance = Number(localStorage.getItem("tt_balance") || 0);
+  document.getElementById("balance").textContent = balance;
+
+  function msg(text){
+    document.getElementById("message").textContent = text;
+  }
+
+  function watchAd(){
+    msg("Rewarded ad is not connected yet. We will add Monetag after the Mini App is online.");
+  }
+
+  function referral(){
+    msg("Referral system will be connected after the backend is added.");
+  }
+
+  function withdraw(){
+    msg("Withdrawal system will be added after the secure backend and minimum-withdrawal rules are configured.");
+  }
+
+  function showRules(){
+    msg("Rules: no fake traffic, automated clicks, or forced ad interactions. Rewards will only be credited after a verified ad event.");
+  }
+</script>
+</body>
+</html>
