@@ -65,41 +65,114 @@
 
 <script>
   const tg = window.Telegram?.WebApp;
+
   if (tg) {
     tg.ready();
     tg.expand();
+
     const u = tg.initDataUnsafe?.user;
+
     if (u) {
-      document.getElementById("userInfo").textContent =
-        "Hello, " + (u.first_name || "User") + " 👋";
+      let userText = "Hello, " + (u.first_name || "User") + " 👋";
+
+      if (u.username) {
+        userText += "<br>@" + u.username;
+      }
+
+      if (u.id) {
+        userText += "<br>ID: " + u.id;
+      }
+
+      document.getElementById("userInfo").innerHTML = userText;
     } else {
-      document.getElementById("userInfo").textContent = "Telegram user";
+      document.getElementById("userInfo").textContent =
+        "Telegram user";
     }
+
   } else {
-    document.getElementById("userInfo").textContent = "Preview mode";
+    document.getElementById("userInfo").textContent =
+      "Preview mode";
   }
 
-  let balance = Number(localStorage.getItem("tt_balance") || 0);
-  document.getElementById("balance").textContent = balance;
 
-  function msg(text){
+  // =========================
+  // POINTS SYSTEM
+  // =========================
+
+  let balance = Number(
+    localStorage.getItem("tt_balance") || 0
+  );
+
+  function updateBalance() {
+    document.getElementById("balance").textContent = balance;
+
+    localStorage.setItem(
+      "tt_balance",
+      balance
+    );
+  }
+
+  updateBalance();
+
+
+  // =========================
+  // MESSAGE
+  // =========================
+
+  function msg(text) {
     document.getElementById("message").textContent = text;
   }
 
-  function watchAd(){
-    msg("Rewarded ad is not connected yet. We will add Monetag after the Mini App is online.");
+
+  // =========================
+  // WATCH AD
+  // =========================
+
+  function watchAd() {
+
+    msg(
+      "Ad system is not connected yet. No points were added."
+    );
+
   }
 
-  function referral(){
-    msg("Referral system will be connected after the backend is added.");
+
+  // =========================
+  // REFERRAL
+  // =========================
+
+  function referral() {
+
+    msg(
+      "Referral system will be connected after the backend is added."
+    );
+
   }
 
-  function withdraw(){
-    msg("Withdrawal system will be added after the secure backend and minimum-withdrawal rules are configured.");
+
+  // =========================
+  // WITHDRAW
+  // =========================
+
+  function withdraw() {
+
+    msg(
+      "Withdrawal will be available after the secure backend is connected."
+    );
+
   }
 
-  function showRules(){
-    msg("Rules: no fake traffic, automated clicks, or forced ad interactions. Rewards will only be credited after a verified ad event.");
+
+  // =========================
+  // RULES
+  // =========================
+
+  function showRules() {
+
+    msg(
+      "Rules: No fake traffic, automated clicks, or forced ad interactions. Rewards will only be credited after a verified ad event."
+    );
+
   }
 </script>
 </body>
