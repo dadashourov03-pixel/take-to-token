@@ -5,75 +5,178 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
   <title>Take to Token</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
   <style>
     *{box-sizing:border-box}
+
     body{
-      margin:0;font-family:Arial,sans-serif;
+      margin:0;
+      font-family:Arial,sans-serif;
       background:var(--tg-theme-bg-color,#0f172a);
       color:var(--tg-theme-text-color,#fff);
     }
-    .wrap{max-width:520px;margin:auto;padding:20px 16px 30px}
+
+    .wrap{
+      max-width:520px;
+      margin:auto;
+      padding:20px 16px 30px
+    }
+
     .hero{
-      padding:24px 18px;border-radius:22px;
+      padding:24px 18px;
+      border-radius:22px;
       background:linear-gradient(135deg,#5b21b6,#2563eb);
       box-shadow:0 12px 30px rgba(0,0,0,.2)
     }
-    .title{font-size:28px;font-weight:800;margin:0 0 6px}
-    .sub{opacity:.9;margin:0}
+
+    .title{
+      font-size:28px;
+      font-weight:800;
+      margin:0 0 6px
+    }
+
+    .sub{
+      opacity:.9;
+      margin:0
+    }
+
     .card{
-      margin-top:16px;padding:18px;border-radius:18px;
+      margin-top:16px;
+      padding:18px;
+      border-radius:18px;
       background:var(--tg-theme-secondary-bg-color,#1e293b)
     }
-    .label{font-size:13px;opacity:.7}
-    .balance{font-size:34px;font-weight:800;margin-top:5px}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+
+    .label{
+      font-size:13px;
+      opacity:.7
+    }
+
+    .balance{
+      font-size:34px;
+      font-weight:800;
+      margin-top:5px
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:16px
+    }
+
     button{
-      width:100%;border:0;border-radius:15px;padding:16px 10px;
-      font-size:15px;font-weight:700;color:#fff;background:#2563eb;
+      width:100%;
+      border:0;
+      border-radius:15px;
+      padding:16px 10px;
+      font-size:15px;
+      font-weight:700;
+      color:#fff;
+      background:#2563eb;
       cursor:pointer
     }
-    button.secondary{background:#334155}
-    button:active{transform:scale(.98)}
-    .notice{font-size:13px;line-height:1.5;opacity:.75;margin-top:16px}
-    .user{margin-top:12px;font-size:14px;opacity:.8}
+
+    button.secondary{
+      background:#334155
+    }
+
+    button:active{
+      transform:scale(.98)
+    }
+
+    .notice{
+      font-size:13px;
+      line-height:1.5;
+      opacity:.75;
+      margin-top:16px
+    }
+
+    .user{
+      margin-top:12px;
+      font-size:14px;
+      opacity:.8
+    }
   </style>
 </head>
+
 <body>
+
 <div class="wrap">
+
   <section class="hero">
     <h1 class="title">💰 Take to Token</h1>
-    <p class="sub">Earn points by completing available tasks.</p>
-    <div class="user" id="userInfo">Connecting to Telegram...</div>
+
+    <p class="sub">
+      Earn points by completing available tasks.
+    </p>
+
+    <div class="user" id="userInfo">
+      Connecting to Telegram...
+    </div>
   </section>
+
 
   <section class="card">
-    <div class="label">YOUR BALANCE</div>
-    <div class="balance"><span id="balance">0</span> Points</div>
+
+    <div class="label">
+      YOUR BALANCE
+    </div>
+
+    <div class="balance">
+      <span id="balance">0</span> Points
+    </div>
+
   </section>
 
+
   <div class="grid">
-    <button onclick="watchAd()">🎁 Watch Ad & Earn</button>
-    <button class="secondary" onclick="referral()">👥 Refer & Earn</button>
-    <button class="secondary" onclick="withdraw()">💸 Withdraw</button>
-    <button class="secondary" onclick="showRules()">📋 Rules</button>
+
+    <button onclick="watchAd()">
+      🎁 Watch Ad & Earn
+    </button>
+
+    <button class="secondary" onclick="referral()">
+      👥 Refer & Earn
+    </button>
+
+    <button class="secondary" onclick="withdraw()">
+      💸 Withdraw
+    </button>
+
+    <button class="secondary" onclick="showRules()">
+      📋 Rules
+    </button>
+
   </div>
+
 
   <div class="card notice" id="message">
-    Ad/reward integration is not connected yet. This first version is only the Mini App interface.
+    Welcome to Take to Token! Complete tasks and earn points.
   </div>
+
 </div>
 
+
 <script>
+
+  // =========================
+  // TELEGRAM
+  // =========================
+
   const tg = window.Telegram?.WebApp;
 
   if (tg) {
+
     tg.ready();
     tg.expand();
 
     const u = tg.initDataUnsafe?.user;
 
     if (u) {
-      let userText = "Hello, " + (u.first_name || "User") + " 👋";
+
+      let userText =
+        "Hello, " + (u.first_name || "User") + " 👋";
 
       if (u.username) {
         userText += "<br>@" + u.username;
@@ -83,15 +186,21 @@
         userText += "<br>ID: " + u.id;
       }
 
-      document.getElementById("userInfo").innerHTML = userText;
+      document.getElementById("userInfo").innerHTML =
+        userText;
+
     } else {
+
       document.getElementById("userInfo").textContent =
         "Telegram user";
+
     }
 
   } else {
+
     document.getElementById("userInfo").textContent =
       "Preview mode";
+
   }
 
 
@@ -103,14 +212,19 @@
     localStorage.getItem("tt_balance") || 0
   );
 
+
   function updateBalance() {
-    document.getElementById("balance").textContent = balance;
+
+    document.getElementById("balance").textContent =
+      balance;
 
     localStorage.setItem(
       "tt_balance",
       balance
     );
+
   }
+
 
   updateBalance();
 
@@ -120,7 +234,10 @@
   // =========================
 
   function msg(text) {
-    document.getElementById("message").textContent = text;
+
+    document.getElementById("message").textContent =
+      text;
+
   }
 
 
@@ -131,21 +248,81 @@
   function watchAd() {
 
     msg(
-      "Ad system is not connected yet. No points were added."
+      "🎁 Rewarded ad is not connected yet. We will add the ad system later."
     );
 
   }
 
 
   // =========================
-  // REFERRAL
+  // REFERRAL SYSTEM
   // =========================
 
   function referral() {
 
-    msg(
-      "Referral system will be connected after the backend is added."
-    );
+    const user =
+      tg?.initDataUnsafe?.user;
+
+    if (!user || !user.id) {
+
+      msg(
+        "Please open this app from Telegram."
+      );
+
+      return;
+    }
+
+
+    // Your Telegram bot username
+    const botUsername =
+      "Taketotoken_bot";
+
+
+    // Create referral link
+    const refLink =
+      "https://t.me/" +
+      botUsername +
+      "?startapp=ref_" +
+      user.id;
+
+
+    // Copy referral link
+    if (
+      navigator.clipboard &&
+      window.isSecureContext
+    ) {
+
+      navigator.clipboard.writeText(refLink)
+
+        .then(function(){
+
+          msg(
+            "🎉 Referral link copied!\n\n" +
+            refLink +
+            "\n\nShare this link with your friends."
+          );
+
+        })
+
+        .catch(function(){
+
+          msg(
+            "🎉 Your referral link:\n\n" +
+            refLink +
+            "\n\nCopy and share it with your friends."
+          );
+
+        });
+
+    } else {
+
+      msg(
+        "🎉 Your referral link:\n\n" +
+        refLink +
+        "\n\nCopy and share it with your friends."
+      );
+
+    }
 
   }
 
@@ -157,7 +334,7 @@
   function withdraw() {
 
     msg(
-      "Withdrawal will be available after the secure backend is connected."
+      "💸 Withdrawal will be available after the secure backend and withdrawal rules are configured."
     );
 
   }
@@ -170,10 +347,12 @@
   function showRules() {
 
     msg(
-      "Rules: No fake traffic, automated clicks, or forced ad interactions. Rewards will only be credited after a verified ad event."
+      "📋 Rules: No fake traffic, automated clicks, or forced ad interactions. Rewards will only be credited after a verified ad event."
     );
 
   }
+
 </script>
+
 </body>
 </html>
